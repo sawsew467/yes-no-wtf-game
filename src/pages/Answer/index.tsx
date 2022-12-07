@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getAnswerAPI } from "../../apis";
-import { AppInterface } from "../../App";
+import { getAnswerAPI } from "@/apis/";
+import { AppInterface } from "@/App";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link } from "react-router-dom";
@@ -18,28 +18,40 @@ const antIcon = (
 );
 
 function index({ playerList, setPlayerList, round }: IProps) {
-  const [result, setResult] = useState<boolean[]>([]);
+  const [result, setResult] = useState<string[]>(
+    JSON.parse(`${window.localStorage.getItem("playerList")}`)[0].results ?? []
+  );
   const [isLoading, setIsloading] = useState<boolean>(true);
   useEffect(() => {
     getAnswerAPI()
       .then((res) => {
-        const boolValue = res.data.answer == "yes";
         if (result.length < round) {
-          setResult([...result, boolValue]);
+          setResult([...result, res.data.answer.toUpperCase()]);
           setPlayerList(
             playerList.map((player, index) => {
               return {
                 ...player,
-                results: [...result, boolValue],
+                results: [...result, res.data.answer.toUpperCase()],
               };
             })
+          );
+          window.localStorage.setItem(
+            "playerList",
+            JSON.stringify(
+              playerList.map((player, index) => {
+                return {
+                  ...player,
+                  results: [...result, res.data.answer.toUpperCase()],
+                };
+              })
+            )
           );
         } else {
           setIsloading(false);
         }
       })
       .catch((err) => {
-        console.log(err);
+        alert("Sorry, some error occurred :((");
       });
   }, [result]);
   return (
@@ -50,39 +62,40 @@ function index({ playerList, setPlayerList, round }: IProps) {
         </h1>
         <div className="flex flex-row text-lg items-end justify-center sm:justify-start font-medium mb-16">
           <p className="text-lg">Player:&nbsp;</p>
-          <p className="text-lg text-red-500">{playerList[0].name}</p>
+          <div className="text-lg text-red-500">{playerList[0].name}</div>
           ,&nbsp;
-          <p className="text-lg text-green-500">{playerList[1].name}</p>
+          <div className="text-lg text-green-500">{playerList[1].name}</div>
         </div>
         <div className="flex sm:flex-row flex-col flex-wrap w-full justify-start sm:gap-10 gap-2 sm:mb-8 mb-2">
           {Array.from(Array(round), (x, index) => index + 1).map(
             (question, index) => (
-              <div className="sm:w-[30%] w-full flex flex-col  justify-center">
+              <div
+                className="sm:w-[30%] w-full flex flex-col  justify-center"
+                key={index}
+              >
                 <span>Round {question}:</span>
                 {isLoading ? (
                   <Skeleton count={1} height={72}></Skeleton>
                 ) : (
                   <div className="flex flex-col p-2 bg-[#d5d5d5] mt-1">
-                    <p className="text-lg">
-                      Result: {result[index] ? "Yes" : "No"}
-                    </p>
-                    <p className="text-lg flex flex-row">
+                    <p className="text-lg">Result: {result[index]}</p>
+                    <div className="text-lg flex flex-row">
                       Winner:&nbsp;
-                      {playerList[0].answers[index] == +result[index] && (
-                        <p className="text-lg text-red-500">
+                      {playerList[0].answers[index] == result[index] && (
+                        <div className="text-lg text-red-500">
                           {playerList[0].name} &nbsp;
-                        </p>
+                        </div>
                       )}
-                      {playerList[1].answers[index] == +result[index] && (
-                        <p className="text-lg text-green-500">
+                      {playerList[1].answers[index] == result[index] && (
+                        <div className="text-lg text-green-500">
                           {playerList[1].name}
-                        </p>
+                        </div>
                       )}
-                      {playerList[0].answers[index] != +result[index] &&
-                        playerList[1].answers[index] != +result[index] && (
-                          <p className="text-lg">empty</p>
+                      {playerList[0].answers[index] != result[index] &&
+                        playerList[1].answers[index] != result[index] && (
+                          <div className="text-lg">empty</div>
                         )}
-                    </p>
+                    </div>
                   </div>
                 )}
               </div>

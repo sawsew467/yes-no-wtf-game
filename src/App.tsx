@@ -10,9 +10,9 @@ export interface AppInterface {
   player: {
     id: string;
     name: string;
-    createAt: string;
-    answers: number[];
-    results: boolean[];
+    createdAt: string;
+    answers: string[];
+    results: string[];
   };
   playerList: AppInterface["player"][];
   round: number;
@@ -22,8 +22,6 @@ function App() {
   const [playerList, setPlayerList] = useState<AppInterface["playerList"]>(
     JSON.parse(`${window.localStorage.getItem("playerList")}`) ?? []
   );
-  console.log(playerList);
-
   const [round, setRound] = useState<AppInterface["round"]>(
     JSON.parse(`${window.localStorage.getItem("round")}`) ?? 0
   );

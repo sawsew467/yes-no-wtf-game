@@ -12,7 +12,7 @@ interface IProps {
   playerResult: {
     id: string;
     name: string;
-    createAt: string;
+    createdAt: string;
     answers: string;
     results: string;
     score: number;
@@ -28,13 +28,12 @@ const columns: ColumnsType<DataType> = [
   {
     title: "Correct percent",
     dataIndex: "correctedPercent",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => +a.correctedPercent.slice(0, -1) - +b.correctedPercent.slice(0, -1),
+    sorter: (a, b) =>
+      +a.correctedPercent.slice(0, -1) - +b.correctedPercent.slice(0, -1),
   },
   {
     title: "Total score",
     dataIndex: "totalScore",
-    defaultSortOrder: "descend",
     sorter: (a, b) => a.totalScore - b.totalScore,
   },
 ];

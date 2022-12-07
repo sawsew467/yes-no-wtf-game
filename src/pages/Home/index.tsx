@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { AppInterface } from "../../App";
+import { AppInterface } from "@/App";
 
 interface IProps {
   setPlayerList: React.Dispatch<React.SetStateAction<AppInterface["player"][]>>;
@@ -11,7 +11,7 @@ function index({ setPlayerList, setRound }: IProps) {
   const [isStart, setIsStart] = useState(false);
   const startGame = () => {
     setIsStart(!isStart);
-    setPlayerList([])
+    setPlayerList([]);
     window.localStorage.setItem("playerList", JSON.stringify([]));
   };
   return (

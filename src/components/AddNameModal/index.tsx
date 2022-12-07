@@ -1,6 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { AppInterface } from "../../App";
+import { AppInterface } from "@/App";
 
 interface IProps {
   setIsShowAddNameModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,7 +14,7 @@ function AddNameModal({
   setPlayerList,
 }: IProps) {
   const [name, setName] = useState<string>("");
-  const validate = (name:string):boolean => {
+  const validate = (name: string): boolean => {
     if (name === "") {
       alert("Please enter player's name!");
       return false;
@@ -36,7 +36,7 @@ function AddNameModal({
       {
         id: `${playerList.length + 1}`,
         name: name,
-        createAt: moment().format("LLL"),
+        createdAt: moment().format("LLL"),
         answers: [],
         results: [],
       },
@@ -47,9 +47,6 @@ function AddNameModal({
     e.preventDefault();
     setIsShowAddNameModal(false);
   };
-  // useEffect(() => {
-  //   window.localStorage.setItem("playerList", JSON.stringify(playerList));
-  // }, [playerList]);
   return (
     <div className="flex flex-col border-2 border-black sm:w-[400px] w-full">
       <p className="py-2 text-2xl text-center border-b-2 border-black">

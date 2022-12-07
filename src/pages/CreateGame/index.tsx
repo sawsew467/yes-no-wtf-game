@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
-import AddNameModal from "../../components/AddNameModal";
-import { AppInterface } from "../../App";
+import AddNameModal from "@/components/AddNameModal";
+import { AppInterface } from "@/App";
 
 interface IProps {
   playerList: AppInterface["player"][];
@@ -29,6 +29,14 @@ function index({ playerList, setPlayerList, setRound }: IProps) {
     if (!validate()) {
       return;
     }
+    setPlayerList(
+      playerList.map((player, index) => {
+        return {
+          ...player,
+          answers: Array(+inputValue).fill("EMPTY"),
+        };
+      })
+    );
     setRound(+inputValue);
     navigate("/submit-answer");
   };
