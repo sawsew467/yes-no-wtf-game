@@ -53,10 +53,10 @@ function index({ playerList, setPlayerList, round }: IProps) {
             's turn
           </p>
         </div>
-        <div className="flex sm:flex-row flex-col flex-wrap w-full justify-start gap-10">
+        <div className="flex sm:flex-row flex-col flex-wrap w-full justify-start sm:gap-10 gap-2 sm:mb-8 mb-2">
           {Array.from(Array(round), (x, index) => index + 1).map(
             (question, index) => (
-              <div className="sm:w-[30%] w-full flex flex-col mb-8" key={index}>
+              <div className="sm:w-[30%] w-full flex flex-col sm:mb-8 mb-2" key={index}>
                 <span>Round {question}:</span>
                 <div className="flex flex-row justify-between">
                   {answerList[index] === 1 ? (

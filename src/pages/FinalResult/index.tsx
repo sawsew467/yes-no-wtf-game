@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AppInterface } from "../../App";
 import Table from "../../components/FinalTable";
 import SummaryTable from "../../components/SummaryTable";
+import { Form, Input } from "antd";
 
 interface IProps {
   playerList: AppInterface["player"][];
@@ -19,6 +20,10 @@ interface IState {
 }
 
 function index({ playerList }: IProps) {
+  const [winnerMessage, setWinnerMessage] = useState<string>("");
+  const [filterPlayerList, setFilterPlayerList] = useState<
+    IState["playerResult"]
+  >([]);
   const [playerResult, setPlayerResult] = useState<IState["playerResult"]>(
     playerList.map((player, index) => {
       return {
@@ -43,25 +48,47 @@ function index({ playerList }: IProps) {
       };
     })
   );
-  const showWinner = () => {
+  useEffect(() => {
+    setFilterPlayerList(playerResult);
     if (playerResult[0].score > playerResult[1].score) {
-      return `The winner is: ${playerResult[0].name}`;
+      setWinnerMessage(`The winner is: ${playerResult[0].name}`);
     } else if (playerResult[0].score < playerResult[1].score) {
-      return `The winner is: ${playerResult[1].name}`;
+      setWinnerMessage(`The winner is: ${playerResult[1].name}`);
     } else {
-      return `The match is drawn!`;
+      setWinnerMessage(`The match is drawn!`);
     }
-    return "";
+  }, []);
+
+  const handleSearch = (searchInput: string) => {
+    console.log("searchInput: ", searchInput);
+    const playersName = playerResult.map((item: any) =>
+      item.name.toLowerCase()
+    );
+    const filterArr = playerResult.filter((item: any, index: number) =>
+      playersName[index].includes(searchInput.toLowerCase())
+    );
+    console.log(filterArr);
+
+    setFilterPlayerList(filterArr);
   };
+
   return (
     <>
-      <div className="p-2 w-screen flex flex-col">
-        <h1 className="text-4xl mb-16">Yes No WTF Game</h1>
+      <div className="p-2 w-screen flex flex-col gap-8">
+        <h1 className="text-4xl mt-16">Yes No WTF Game</h1>
         <h2 className="text-4xl text-center">Final result</h2>
-        <input
+        {/* <input
           placeholder="Search by player's name"
           className="w-[300px] border-[1px] border-black rounded-sm px-2 py-1 outline-none "
-        ></input>
+        ></input> */}
+        <div className="self-start">
+          <label className="">Search: </label>
+          <input
+            placeholder="Player's name"
+            className="w-[300px] border-[1px] border-[#d9d9d9] rounded-md px-2 py-1 outline-none "
+            onChange={(e) => handleSearch(e.target.value)}
+          ></input>
+        </div>
         {/* <div className="mt-4 flex flex-col w-full">
           <div className="flex flex-row w-full">
             <div className="w-1/12 py-2 text-center border-[1px] border-black">
@@ -106,9 +133,9 @@ function index({ playerList }: IProps) {
             </div>
           ))}
         </div> */}
-        <Table playerResult={playerResult}></Table>
+        <Table playerResult={filterPlayerList}></Table>
         <SummaryTable playerResult={playerResult}></SummaryTable>
-        <div className="text-center">{showWinner()}</div>
+        <div className="text-center text-xl font-semibold">{winnerMessage}</div>
       </div>
     </>
   );

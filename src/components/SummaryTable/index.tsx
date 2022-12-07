@@ -3,10 +3,9 @@ import { Space, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 
 interface DataType {
-  key: React.Key;
   name: string;
   totalScore: number;
-  correctedPercent: number;
+  correctedPercent: string;
 }
 
 interface IProps {
@@ -30,7 +29,7 @@ const columns: ColumnsType<DataType> = [
     title: "Correct percent",
     dataIndex: "correctedPercent",
     defaultSortOrder: "descend",
-    sorter: (a, b) => a.correctedPercent - b.correctedPercent,
+    sorter: (a, b) => +a.correctedPercent.slice(0, -1) - +b.correctedPercent.slice(0, -1),
   },
   {
     title: "Total score",
@@ -46,12 +45,12 @@ function SummaryTable({ playerResult }: IProps) {
     return {
       name: player.name,
       totalScore: player.score,
-      correctedPercent: ((player.score * 1.0) / round).toFixed(2),
+      correctedPercent: (((player.score * 1.0) / round) * 100).toFixed(2) + "%",
     };
   });
   return (
     <>
-      <Table columns={columns} dataSource={data} pagination={false} ></Table>
+      <Table columns={columns} dataSource={data} pagination={false}></Table>
     </>
   );
 }
