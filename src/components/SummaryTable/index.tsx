@@ -49,7 +49,18 @@ function SummaryTable({ playerResult }: IProps) {
   });
   return (
     <>
-      <Table columns={columns} dataSource={data} pagination={false}></Table>
+      <div className="w-1/2 ml-auto">
+        <Table
+          columns={columns}
+          dataSource={data.map((player, index) => {
+            return {
+              key: index,
+              ...player,
+            };
+          })}
+          pagination={false}
+        ></Table>
+      </div>
     </>
   );
 }

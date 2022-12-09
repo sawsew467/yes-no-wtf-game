@@ -39,29 +39,35 @@ function Summary({ playerResult }: IProps) {
       title: "No",
       dataIndex: "id",
       sorter: (a, b) => +a.id - +b.id,
+      width: "10%",
     },
     {
       title: "Name",
       dataIndex: "name",
       sorter: (a, b) => a.name.length - b.name.length,
+      width: "20%",
     },
     {
       title: "Date",
       dataIndex: "createdAt",
       sorter: () => dateSort(),
+      width: "20%",
     },
     {
       title: "Answers",
       dataIndex: "answers",
+      width: "20%",
     },
     {
       title: "Results",
       dataIndex: "results",
+      width: "20%",
     },
     {
       title: "Score",
       dataIndex: "score",
       sorter: (a, b) => a.score - b.score,
+      width: "10%",
     },
   ];
   return (

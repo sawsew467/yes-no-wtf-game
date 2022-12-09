@@ -40,6 +40,23 @@ function index({ playerList, setPlayerList, setRound }: IProps) {
     setRound(+inputValue);
     navigate("/submit-answer");
   };
+  const handleDelete = (pos: number) => {
+    console.log(pos);
+    console.log(playerList);
+
+    setPlayerList(
+      playerList
+        .filter((player, index) => {
+          return index !== pos;
+        })
+        .map((player, index) => {
+          return {
+            ...player,
+            id: "1",
+          };
+        })
+    );
+  };
   return (
     <>
       <div className="max-w-[800px] flex flex-col items-center mx-auto px-2">
@@ -67,11 +84,17 @@ function index({ playerList, setPlayerList, setRound }: IProps) {
               </div>
               {playerList.map((player, index) => (
                 <div
-                  className="flex flex-row border-2  border-t-0 border-black"
+                  className="flex flex-row border-2 border-t-0 border-black"
                   key={player.id}
                 >
-                  <div className="border-r-2 border-black w-1/2 py-2 text-center">
+                  <div className="border-r-2 border-black w-1/2 py-2 text-center px-4 relative">
                     {index + 1}
+                    <div
+                      className="flex justify-center items-center absolute top-0 right-0 h-full"
+                      onClick={() => handleDelete(index)}
+                    >
+                      <i className="fa-solid fa-trash-can cursor-pointer p-2 "></i>
+                    </div>
                   </div>
                   <div className=" w-1/2 py-2 text-center">{player.name}</div>
                 </div>
